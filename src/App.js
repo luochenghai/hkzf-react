@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <Router>
         <div className="App">
-            <Route path='/home' component={Home}></Route>
+            <Route component={Home}></Route>
             <Route path='/map' component={Map }></Route>
        </div>
       </Router>
