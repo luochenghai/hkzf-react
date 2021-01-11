@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel } from 'antd-mobile';
-import axios from 'axios'
+import { getSwiper} from './api.js'
 // 通过Home 中的三个Link导航切换三个组件的显示与隐藏
 const BaseURL = `http://localhost:8080`
 class Index extends React.Component { 
@@ -13,7 +13,7 @@ class Index extends React.Component {
      }
       // 获取轮播图数据的方法
       loadSwiper = async () => { 
-        const { data } = await axios.get(`http://localhost:8080/home/swiper`)
+        const { data } = await getSwiper();
         const { status, body } = data;
         if (status === 200) { 
           this.setState(() => { 
