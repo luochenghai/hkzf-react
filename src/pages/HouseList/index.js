@@ -3,7 +3,7 @@ import React from 'react';
 class HouseList extends React.Component { 
     componentDidMount() { }
     render() { 
-        return (<div>HouseList</div>)
+        return (<div></div>)
     }
 }
 export default HouseList

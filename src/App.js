@@ -12,7 +12,7 @@ class App extends React.Component {
   componentDidMount() { }
   render() { 
     return (
-      <Router>index
+      <Router>
         <div className="App">
           <Route path='/home' component={Home}></Route>
           <Route path='/map' component={Map}></Route>

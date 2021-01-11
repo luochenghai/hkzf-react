@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link,Route} from 'react-router-dom'
 // 通过Home 
 import { TabBar } from 'antd-mobile';
 import './index.css'
@@ -11,7 +10,7 @@ import { tabbardata} from './tabbardata.json'
 //常量数据写在类组件的外面（最终应该写在一个json文件中）    
 // const tabbardata = [{
 //     title: '首页',
-//     key: 'index',
+//     key: 'index',index
 //     iconUrl: 'icon-ind',
 //     path:'/home/index'
 // },
@@ -68,91 +67,16 @@ class Home extends React.Component {
 
         })
     }
-    render() { 
-        // return <div>
-        //     <Route path="/home/index" component={Index}></Route>
-        //     <Route path="/home/house" component={HouseList}></Route>
-        //     <Route path="/home/profile" component={Profile}></Route>
-           
-        //     <Link to="/home/index">首页</Link>
-        //     <Link to="/home/house">找房</Link>
-        //     <Link to="/home/profile">个人</Link>
-        // </div>
-       
+    render() {     
         return (
             <div className="Tabbar">
             <TabBar
-                    unselectedTintColor="#949494"
-                    tintColor="#33A3F4"
-                    barTintColor="white"
-                    noRenderContent={ false}
+                unselectedTintColor="#949494"
+                tintColor="#33A3F4"
+                barTintColor="white"
+                noRenderContent={ false}
                 >
                     { this.renderTabBar()}
-
-                {/* <TabBar.Item
-                  title="首页"
-                  key="Life"
-                  icon={<i className="iconfont icon-ind"/>}
-                  selectedIcon={<i className="iconfont icon-ind"/>
-                  }
-                  selected={this.state.selectedTab === '/home/index'}
-                  onPress={() => {
-                      this.props.history.push('/home/index');
-                      this.setState({
-                        selectedTab: '/home/index',
-                      });
-                  }}
-                 
-                >
-                 <Index/>
-                </TabBar.Item>
-                <TabBar.Item
-                icon={<i className="iconfont icon-findHouse"/>}
-                  selectedIcon={
-                    <i className="iconfont icon-findHouse"/>
-                  }
-                  title="找房"
-                  key="Koubei"
-                  selected={this.state.selectedTab === '/home/house'}
-                  onPress={() => {
-                      this.props.history.push('/home/house');
-                      this.setState({
-                        selectedTab: '/home/house',
-                      });
-                  }}
-                  data-seed="logId1"
-                >
-                <HouseList/>
-                </TabBar.Item> */}
-                {/* <TabBar.Item
-                  icon={<i className="iconfont icon-ind"/>}
-                  selectedIcon={
-                    <i className="iconfont icon-ind"/>
-                  }
-                  title="资讯"
-                  key="Friend"
-                  selected={this.state.selectedTab === 'greenTab'}
-                  onPress={() => {
-                    this.props.history.push('/home/index')
-                  }}
-                >
-               
-                </TabBar.Item> */}
-                {/* <TabBar.Item
-                 icon={<i className="iconfont icon-my"/>}
-                  selectedIcon={<i className="iconfont icon-my"/>}
-                  title="我的"
-                  key="my"
-                  selected={this.state.selectedTab === '/home/profile'}
-                  onPress={() => {
-                      this.props.history.push('/home/profile');
-                      this.setState({
-                        selectedTab: '/home/profile',
-                      });
-                  }}
-                >
-               <Profile/>
-                </TabBar.Item> */}
               </TabBar>
             </div>
           );
