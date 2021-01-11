@@ -5,8 +5,9 @@ import { getSwiper} from './api.js'
 const BaseURL = `http://localhost:8080`
 class Index extends React.Component { 
     state = {
-        swiperData: [],
-        imgHeight: 176,
+      swiperData: [],
+      imgHeight: 176,
+      loadFinshed: false  // 数据驱动视图，解决轮播图bug
       }
      componentDidMount() {
         this.loadSwiper();
@@ -14,11 +15,18 @@ class Index extends React.Component {
       // 获取轮播图数据的方法
       loadSwiper = async () => { 
         const { data } = await getSwiper();
+      //  console.log(data)
         const { status, body } = data;
         if (status === 200) { 
+          // 数据获取成功后，在回调函数中改变loadFinshed 的状态
           this.setState(() => { 
-            return {swiperData: body}
-          })
+            return { swiperData: body }
+          },
+            () => {
+            this.setState(() =>{
+              return {loadFinshed: true }
+            })
+         })
         }
       }
 
@@ -44,10 +52,11 @@ class Index extends React.Component {
           </a>
       ))
     }
-    render() { 
+  render() { 
+    const { loadFinshed } = this.state;
       return <div>
             {/* 轮播图 */}
-                <Carousel autoplay={true} infinite>
+                <Carousel autoplay={loadFinshed} infinite>
                   { this.renderSwiper()}
                 </Carousel>
           
