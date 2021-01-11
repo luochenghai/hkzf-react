@@ -1,5 +1,5 @@
-import axios from 'axios'
+import request from '../../utils/http.js'
 
 export const getSwiper = () => {
-    return  axios.get(`http://localhost:8080/home/swiper`)
+    return  request.get(`/home/swiper`)
 } 
