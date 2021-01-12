@@ -1,5 +1,5 @@
 import React from 'react';
-import { Carousel ,Flex } from 'antd-mobile';
+import { Carousel ,Flex , Grid } from 'antd-mobile';
 import { getSwiper ,getGroups} from './api.js'
 import './index.scss'
 // withRouter 引入这个高阶组件是为了使index组件导出后的props有值
@@ -66,37 +66,38 @@ class Index extends React.Component {
         }
   }
   
-        //获取租房小组的数据
-        loadGroups = async () => { 
-          const { data } = await getGroups();
-          const { status, body } = data;
-          if (status === 200) { 
-            this.setState(() => { 
-              return { groupsData: body }
-            })
-          }
+    //获取租房小组的数据
+    loadGroups = async () => { 
+      const { data } = await getGroups();
+      console.log('data',data)
+      const { status, body } = data;
+      if (status === 200) { 
+        this.setState(() => { 
+          return { groupsData: body }
+        })
       }
-      // 轮播图方法
-      renderSwiper = () => { 
-        const { swiperData } = this.state;
-        return swiperData.map(item => (
-          <a
-            key={item.id}
-            href="http://www.itcast.com"
-            style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
-            >
-            <img
-                src={`${BaseURL}${item.imgSrc}`}
-                alt=""
-                style={{ width: '100%', verticalAlign: 'top' }}
-                onLoad={() => {
-                // 图片自适应
-                window.dispatchEvent(new Event('resize'));
-                this.setState({ imgHeight: 'auto' });
-                }}
-            />
-          </a>
-      ))
+  }
+  // 轮播图方法
+  renderSwiper = () => { 
+    const { swiperData } = this.state;
+    return swiperData.map(item => (
+      <a
+        key={item.id}
+        href="http://www.itcast.com"
+        style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
+        >
+        <img
+            src={`${BaseURL}${item.imgSrc}`}
+            alt=""
+            style={{ width: '100%', verticalAlign: 'top' }}
+            onLoad={() => {
+            // 图片自适应
+            window.dispatchEvent(new Event('resize'));
+            this.setState({ imgHeight: 'auto' });
+            }}
+        />
+      </a>
+  ))
   }
     // 导航
   renderNav = () =>{
@@ -111,7 +112,31 @@ class Index extends React.Component {
                 <p>{ item.title}</p>
             </Flex.Item>
       })
+  }
+  // 租房小组
+  renderGrid = () => { 
+    const { groupsData } = this.state;
+  return <Grid
+      data={groupsData}
+      columnNum={2}
+      square={false}
+      activeStyle
+      hasLine={ false}
+      renderItem={(item) => { 
+        return (
+          <Flex className="grid-item" justify="between">
+            <div className="grid-item">
+                <h3>{ item.title}</h3>
+                <p>{ item.desc}</p>
+            </div>
+            <img src={`${BaseURL}${item.imgSrc}`}/>
+          </Flex>
+      )
     }
+          
+    }
+  />
+  }
   render() { 
     const { loadFinshed } = this.state;
       return <div>
@@ -130,7 +155,7 @@ class Index extends React.Component {
             <h3>租房小组</h3>
             <span>更多</span>
           </Flex>
-
+          { this.renderGrid()}
         </div>
             {/* 最新资讯 */}
       </div>
