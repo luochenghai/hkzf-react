@@ -1,7 +1,7 @@
 import React from 'react';
 import { Carousel ,Flex } from 'antd-mobile';
 import { getSwiper } from './api.js'
-import './index.css'
+import './index.scss'
 // withRouter 引入这个高阶组件是为了使index组件导出后的props有值
 import { withRouter } from "react-router-dom";
 // 引入图片
@@ -90,9 +90,10 @@ class Index extends React.Component {
     // 第一层return 返回的是一个数组
     return nav.map((item) => { 
         // 第二层return 返回的是一个react 元素
-      return <Flex.Item className="nav" key={item.id} onClick={() => { 
-        this.props.history.push(item.path)
-      }} >
+      return <Flex.Item
+              className="nav"
+              key={item.id}
+              onClick={() => { this.props.history.push(item.path)}} >
                 <img src={item.img} alt="图片无法显示" />
                 <p>{ item.title}</p>
             </Flex.Item>
@@ -110,7 +111,14 @@ class Index extends React.Component {
         <Flex>
            {this.renderNav()} 
         </Flex>
-            {/* 租房小组-导航（4个） */}
+        {/* 租房小组+宫格菜单导航（4个） */}
+        <div className="group">
+          <Flex className="group-title" justify="between">
+            <h3>租房小组</h3>
+            <span>更多</span>
+          </Flex>
+
+        </div>
             {/* 最新资讯 */}
       </div>
     }
