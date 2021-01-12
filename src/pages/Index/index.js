@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel ,Flex } from 'antd-mobile';
-import { getSwiper } from './api.js'
+import { getSwiper ,getGroups} from './api.js'
 import './index.scss'
 // withRouter 引入这个高阶组件是为了使index组件导出后的props有值
 import { withRouter } from "react-router-dom";
@@ -40,11 +40,13 @@ const nav = [
 class Index extends React.Component { 
     state = {
       swiperData: [],
+      groupsData: [],
       imgHeight: 176,
       loadFinshed: false  // 数据驱动视图，解决轮播图bug
       }
      componentDidMount() {
-        this.loadSwiper();
+       this.loadSwiper();
+       this.loadGroups();
      }
       // 获取轮播图数据的方法
       loadSwiper = async () => { 
@@ -62,7 +64,18 @@ class Index extends React.Component {
             })
          })
         }
-     }
+  }
+  
+        //获取租房小组的数据
+        loadGroups = async () => { 
+          const { data } = await getGroups();
+          const { status, body } = data;
+          if (status === 200) { 
+            this.setState(() => { 
+              return { groupsData: body }
+            })
+          }
+      }
       // 轮播图方法
       renderSwiper = () => { 
         const { swiperData } = this.state;
