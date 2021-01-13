@@ -8,3 +8,8 @@ export const getGroups = () => {
     // area 代表的是地区的编码-》暂时不管
     return  request.get(`/home/groups?area=AREA%7C88cff55c-aaa4-e2e0`)
 } 
+
+export const getNews = () => {
+    // area 代表的是地区的编码-》暂时不管
+    return  request.get(`/home/news?area=AREA|88cff55c-aaa4-e2e0`)
+} 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Carousel ,Flex , Grid } from 'antd-mobile';
-import { getSwiper ,getGroups} from './api.js'
+import { Carousel ,Flex , Grid, WingBlank } from 'antd-mobile';
+import { getSwiper ,getGroups ,getNews} from './api.js'
 import './index.scss'
 // withRouter 引入这个高阶组件是为了使index组件导出后的props有值
 import { withRouter } from "react-router-dom";
@@ -41,12 +41,14 @@ class Index extends React.Component {
     state = {
       swiperData: [],
       groupsData: [],
+      newsData: [],
       imgHeight: 176,
       loadFinshed: false  // 数据驱动视图，解决轮播图bug
       }
      componentDidMount() {
        this.loadSwiper();
        this.loadGroups();
+       this.loadNews();
      }
       // 获取轮播图数据的方法
       loadSwiper = async () => { 
@@ -65,18 +67,29 @@ class Index extends React.Component {
          })
         }
   }
-  
-    //获取租房小组的数据
-    loadGroups = async () => { 
-      const { data } = await getGroups();
-      console.log('data',data)
-      const { status, body } = data;
-      if (status === 200) { 
-        this.setState(() => { 
-          return { groupsData: body }
-        })
+      
+        //获取租房小组的数据
+        loadGroups = async () => { 
+          const { data } = await getGroups();
+          console.log('data',data)
+          const { status, body } = data;
+          if (status === 200) { 
+            this.setState(() => { 
+              return { groupsData: body }
+            })
+          }
       }
-  }
+       //获取租房小组的数据
+       loadNews = async () => { 
+        const { data } = await getNews();
+        console.log('data',data)
+        const { status, body } = data;
+        if (status === 200) { 
+          this.setState(() => { 
+            return { newsData: body }
+          })
+        }
+    }
   // 轮播图方法
   renderSwiper = () => { 
     const { swiperData } = this.state;
@@ -129,13 +142,37 @@ class Index extends React.Component {
                 <h3>{ item.title}</h3>
                 <p>{ item.desc}</p>
             </div>
-            <img src={`${BaseURL}${item.imgSrc}`}/>
+            <img src={`${BaseURL}${item.imgSrc}`} alt=""/>
           </Flex>
       )
     }
           
     }
   />
+  }
+
+  // 最新资讯
+  renderNews = () => { 
+    const { newsData } = this.state;
+    return newsData.map(item => { 
+      return <div className="news-item" key={item.id}>
+       {/* 左侧图片 */}
+       <div className="imgwrap">
+          <img
+            className="img"
+            src={`${BaseURL}${item.imgSrc}`}
+            alt=""
+          />
+       </div>
+       <Flex className="content" direction="column" justify="between">
+         <h3 className="title">{item.title}</h3>
+         <Flex className="info" justify="between">
+           <span>{ item.from}</span>
+           <span>{ item.date}</span>
+          </Flex>
+       </Flex>
+     </div>
+    })
   }
   render() { 
     const { loadFinshed } = this.state;
@@ -157,7 +194,11 @@ class Index extends React.Component {
           </Flex>
           { this.renderGrid()}
         </div>
-            {/* 最新资讯 */}
+        {/* 最新资讯 */}
+        <div className="news">
+          <h3 className="group-title">最新资讯</h3>
+          <WingBlank size="md"> { this.renderNews()}</WingBlank>
+        </div>
       </div>
     }
 }
