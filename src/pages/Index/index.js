@@ -202,7 +202,7 @@ class Index extends React.Component {
   render() { 
     const { loadFinshed ,cityInfo} = this.state;
       return <div>
-        <NavBar mode="dark" icon={cityInfo.label}>首页</NavBar>
+        <NavBar mode="dark" icon={cityInfo.label} onLeftClick={() => {this.props.history.push('/citylist')}}>首页</NavBar>
                   
         {/* 轮播图 */}
         <Carousel autoplay={loadFinshed} infinite>

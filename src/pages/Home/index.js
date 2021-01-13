@@ -6,6 +6,7 @@ import '../../assets/fonts/iconfont.css'
 import Index from '../../pages/Index/index.js'
 import HouseList from '../../pages/HouseList/index.js'
 import Profile from '../../pages/Profile/index.js'
+
 import { tabbardata} from './tabbardata.json'
 //常量数据写在类组件的外面（最终应该写在一个json文件中）    
 // const tabbardata = [{
@@ -33,6 +34,7 @@ class Home extends React.Component {
         selectedTab: this.props.location.pathname
     };
 
+   // 渲染组件
    renderComponent = (path) => { 
         switch (path) { 
             case '/home':
