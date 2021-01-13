@@ -1,6 +1,6 @@
 import React from 'react';
 import { Carousel ,Flex , Grid, WingBlank ,NavBar} from 'antd-mobile';
-import { getSwiper ,getGroups ,getNews} from './api.js'
+import { getSwiper ,getGroups ,getNews,getAreaInfo} from './api.js'
 import './index.scss'
 // withRouter 引入这个高阶组件是为了使index组件导出后的props有值
 import { withRouter } from "react-router-dom";
@@ -45,7 +45,12 @@ class Index extends React.Component {
       newsData: [],
       imgHeight: 176,
       loadFinshed: false , // 数据驱动视图，解决轮播图bug
-      currentCityName:'北京市'
+     // currentCityName:'北京市'
+     cityInfo:{
+       name:'北京',
+       value:'%E5%8C%97%E4%BA%AC'
+
+     }
       }
      componentDidMount() {
        this.loadSwiper();
@@ -180,21 +185,25 @@ class Index extends React.Component {
 
   getCurrentCity = ()=>{
     const myCity = new BMap.LocalCity();
-    const myFun = (result)=>{
+    const myFun = async result=>{
       const cityName = result.name;
-      console.log("当前定位城市:"+cityName);
+      // 通过接口查询城市
+      const {data} = await getAreaInfo(cityName);
+      const {body:{label,value}} =  data;
+      // console.log('data',data)
+      // console.log("当前定位城市:"+cityName);
       this.setState(()=>{
-        return {currentCityName:cityName}
+        // return {currentCityName:body.label}
+        return {cityInfo:{...this.state.cityInfo,label,value}}
       })
     }
     myCity.get(myFun); 
   }
   render() { 
-    const { loadFinshed ,currentCityName} = this.state;
+    const { loadFinshed ,cityInfo} = this.state;
       return <div>
-        <NavBar mode="dark" icon={currentCityName}>首页</NavBar>
-                
-            
+        <NavBar mode="dark" icon={cityInfo.label}>首页</NavBar>
+                  
         {/* 轮播图 */}
         <Carousel autoplay={loadFinshed} infinite>
           { this.renderSwiper()}
