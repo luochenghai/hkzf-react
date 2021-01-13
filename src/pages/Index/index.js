@@ -1,5 +1,5 @@
 import React from 'react';
-import { Carousel ,Flex , Grid, WingBlank } from 'antd-mobile';
+import { Carousel ,Flex , Grid, WingBlank ,NavBar} from 'antd-mobile';
 import { getSwiper ,getGroups ,getNews} from './api.js'
 import './index.scss'
 // withRouter 引入这个高阶组件是为了使index组件导出后的props有值
@@ -10,7 +10,8 @@ import  Nav2  from "../../assets/images/nav-2.png";
 import  Nav3  from "../../assets/images/nav-3.png";
 import  Nav4  from "../../assets/images/nav-4.png";
 // 通过Home 中的三个Link导航切换三个组件的显示与隐藏
-const BaseURL = `http://localhost:8080`
+const BaseURL = `http://localhost:8080`;
+const {BMap} = window;
 const nav = [
   {
     img: Nav1,
@@ -43,12 +44,14 @@ class Index extends React.Component {
       groupsData: [],
       newsData: [],
       imgHeight: 176,
-      loadFinshed: false  // 数据驱动视图，解决轮播图bug
+      loadFinshed: false , // 数据驱动视图，解决轮播图bug
+      currentCityName:'北京市'
       }
      componentDidMount() {
        this.loadSwiper();
        this.loadGroups();
        this.loadNews();
+       this.getCurrentCity();
      }
       // 获取轮播图数据的方法
       loadSwiper = async () => { 
@@ -174,13 +177,28 @@ class Index extends React.Component {
      </div>
     })
   }
+
+  getCurrentCity = ()=>{
+    const myCity = new BMap.LocalCity();
+    const myFun = (result)=>{
+      const cityName = result.name;
+      console.log("当前定位城市:"+cityName);
+      this.setState(()=>{
+        return {currentCityName:cityName}
+      })
+    }
+    myCity.get(myFun); 
+  }
   render() { 
-    const { loadFinshed } = this.state;
+    const { loadFinshed ,currentCityName} = this.state;
       return <div>
+        <NavBar mode="dark" icon={currentCityName}>首页</NavBar>
+                
+            
         {/* 轮播图 */}
-            <Carousel autoplay={loadFinshed} infinite>
-              { this.renderSwiper()}
-            </Carousel>
+        <Carousel autoplay={loadFinshed} infinite>
+          { this.renderSwiper()}
+        </Carousel>
           
         {/* 宫格菜单 */}
         <Flex>
