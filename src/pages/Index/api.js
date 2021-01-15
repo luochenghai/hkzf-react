@@ -19,3 +19,8 @@ export const getAreaInfo = (name='%E5%8C%97%E4%BA%AC') => {
     // area 代表的是地区的编码-》暂时不管
     return  request.get(`/area/info?name=${name}`)
 } 
+
+
+export const getAreaCity = () => {
+    return  request.get(`/area/city?level=1`)
+} 

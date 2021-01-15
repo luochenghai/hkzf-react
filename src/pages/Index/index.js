@@ -90,7 +90,7 @@ class Index extends React.Component {
        //获取租房小组的数据
        loadNews = async () => { 
         const { data } = await getNews();
-        console.log('data',data)
+        //console.log('data',data)
         const { status, body } = data;
         if (status === 200) { 
           this.setState(() => { 
