@@ -4,6 +4,7 @@ import { getSwiper ,getGroups ,getNews,getAreaInfo} from './api.js'
 import './index.scss'
 // withRouter 引入这个高阶组件是为了使index组件导出后的props有值
 import { withRouter } from "react-router-dom";
+import { getCurrentCity } from "../../utils/getCurrentCity.js";
 // 引入图片
 import  Nav1  from "../../assets/images/nav-1.png";
 import  Nav2  from "../../assets/images/nav-2.png";
@@ -11,7 +12,8 @@ import  Nav3  from "../../assets/images/nav-3.png";
 import  Nav4  from "../../assets/images/nav-4.png";
 // 通过Home 中的三个Link导航切换三个组件的显示与隐藏
 const BaseURL = `http://localhost:8080`;
-const {BMap} = window;
+// 获取当前城市
+// const {BMap} = window;
 const nav = [
   {
     img: Nav1,
@@ -56,10 +58,23 @@ class Index extends React.Component {
        this.loadSwiper();
        this.loadGroups();
        this.loadNews();
-       this.getCurrentCity();
-     }
-      // 获取轮播图数据的方法
-      loadSwiper = async () => { 
+      // cb版本
+      //  getCurrentCity(({label,value})=>{
+      //   this.setState(()=>{
+      //   return {cityInfo:{...this.state.cityInfo,label,value}}
+      // })
+      //  });
+
+      // promise版本
+      getCurrentCity().then(res=>{
+        const {label,value } = res;
+         this.setState(()=>{
+            return {cityInfo:{...this.state.cityInfo,label,value}}
+          })
+      })
+    }
+  // 获取轮播图数据的方法
+  loadSwiper = async () => { 
         const { data } = await getSwiper();
       //  console.log(data)
         const { status, body } = data;
@@ -77,7 +92,7 @@ class Index extends React.Component {
   }
       
         //获取租房小组的数据
-        loadGroups = async () => { 
+  loadGroups = async () => { 
           const { data } = await getGroups();
           console.log('data',data)
           const { status, body } = data;
@@ -87,8 +102,8 @@ class Index extends React.Component {
             })
           }
       }
-       //获取租房小组的数据
-       loadNews = async () => { 
+ //获取租房小组的数据
+  loadNews = async () => { 
         const { data } = await getNews();
         //console.log('data',data)
         const { status, body } = data;
@@ -183,22 +198,23 @@ class Index extends React.Component {
     })
   }
 
-  getCurrentCity = ()=>{
-    const myCity = new BMap.LocalCity();
-    const myFun = async result=>{
-      const cityName = result.name;
-      // 通过接口查询城市
-      const {data} = await getAreaInfo(cityName);
-      const {body:{label,value}} =  data;
-      // console.log('data',data)
-      // console.log("当前定位城市:"+cityName);
-      this.setState(()=>{
-        // return {currentCityName:body.label}
-        return {cityInfo:{...this.state.cityInfo,label,value}}
-      })
-    }
-    myCity.get(myFun); 
-  }
+// 原来将获取当前城市的方法写在index里，因为在点击城市后，所有城市列表也会用到当前城市 所以抽离成公共的方法 在utils
+  // getCurrentCity = ()=>{
+  //   const myCity = new BMap.LocalCity();
+  //   const myFun = async result=>{
+  //     const cityName = result.name;
+  //     // 通过接口查询城市
+  //     const {data} = await getAreaInfo(cityName);
+  //     const {body:{label,value}} =  data;
+  //     // console.log('data',data)
+  //     // console.log("当前定位城市:"+cityName);
+  //     this.setState(()=>{
+  //       // return {currentCityName:body.label}
+  //       return {cityInfo:{...this.state.cityInfo,label,value}}
+  //     })
+  //   }
+  //   myCity.get(myFun); 
+  // }
   render() { 
     const { loadFinshed ,cityInfo} = this.state;
       return <div>

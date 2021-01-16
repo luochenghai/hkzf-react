@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavBar, Icon } from 'antd-mobile';
-import { getAreaCity ,getHotCity} from '../Index/api'
+import { getAreaCity ,getHotCity} from '../Index/api.js'
+import { getCurrentCity } from "../../utils/getCurrentCity.js";
 //import Item from 'antd-mobile/lib/popover/Item';
 class CityList extends React.Component { 
     componentDidMount() { this.loadCities()}
@@ -28,12 +29,19 @@ class CityList extends React.Component {
       // 获取热门城市
       const { data:hotData } = await getHotCity();
       const { status, body } = data;
+  
       if (status === 200) { 
         // 处理后台返回的数据
         const {cityIndex,citylist} = this.formCityData(body);
         // 在原来的数据的基础上增加热门城市
         cityIndex.unshift('hot');
         citylist['hot'] = hotData.body;
+        // 当前城市
+        getCurrentCity().then(res=>{
+          const {label,value} =res;
+          cityIndex.unshift('curCity');
+          citylist['curCity'] = [{label,value}];
+        })
         console.log(citylist,cityIndex)
       }
      
