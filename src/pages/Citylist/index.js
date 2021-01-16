@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavBar, Icon } from 'antd-mobile';
-import { getAreaCity } from '../Index/api'
+import { getAreaCity ,getHotCity} from '../Index/api'
 //import Item from 'antd-mobile/lib/popover/Item';
 class CityList extends React.Component { 
     componentDidMount() { this.loadCities()}
@@ -18,22 +18,27 @@ class CityList extends React.Component {
       })
       // cityIndex 是无序的，需要处理成有序的
       cityIndex = Object.keys(citylist).sort();
-     // console.log('cityIndex',cityIndex)
+      // console.log('cityIndex',cityIndex)
       return {cityIndex,citylist}
     }
 
 
     loadCities = async () => { 
       const { data } = await getAreaCity();
-    //  console.log('data',data)
+      // 获取热门城市
+      const { data:hotData } = await getHotCity();
       const { status, body } = data;
       if (status === 200) { 
         // 处理后台返回的数据
         const {cityIndex,citylist} = this.formCityData(body);
+        // 在原来的数据的基础上增加热门城市
+        cityIndex.unshift('hot');
+        citylist['hot'] = hotData.body;
         console.log(citylist,cityIndex)
       }
      
   }
+
     render() {
         return (<div>
             <NavBar

@@ -24,3 +24,7 @@ export const getAreaInfo = (name='%E5%8C%97%E4%BA%AC') => {
 export const getAreaCity = () => {
     return  request.get(`/area/city?level=1`)
 } 
+
+export const getHotCity = () => {
+    return  request.get(`/area/hot`)
+} 
