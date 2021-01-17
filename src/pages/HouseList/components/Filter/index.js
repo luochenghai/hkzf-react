@@ -19,7 +19,13 @@ export default class Filter extends Component {
       more: false
     }
   };
-  
+  // 改变成高亮的方法
+  onTitleClick = (type)=>{
+    console.log('type',type)
+    this.setState(
+      {titleSelectedStatus: {...this.state.titleSelectedStatus,[type]:true}}
+    )
+  }
   render() {
     const {titleSelectedStatus} = this.state;
     return (
@@ -29,7 +35,7 @@ export default class Filter extends Component {
 
         <div className={styles.content}>
           {/* 标题栏 */}{/* 副组件给子组件传值 */}
-          <FilterTitle titleSelectedStatus ={titleSelectedStatus}/>
+          <FilterTitle titleSelectedStatus ={titleSelectedStatus} onTitleClick={this.onTitleClick}/>
 
           {/* 前三个菜单对应的内容： */}
           {/* <FilterPicker /> */}
