@@ -17,17 +17,19 @@ export default class Filter extends Component {
       mode: false,
       price: false,
       more: false
-    }
+    },
+    openType:''
   };
   // 改变成高亮的方法
   onTitleClick = (type)=>{
-    console.log('type',type)
+    // console.log('type',type)
     this.setState(
-      {titleSelectedStatus: {...this.state.titleSelectedStatus,[type]:true}}
+      {titleSelectedStatus: {...this.state.titleSelectedStatus,[type]:true},openType:type}
     )
   }
   render() {
-    const {titleSelectedStatus} = this.state;
+    const {titleSelectedStatus,openType} = this.state;
+    // console.log('openType',openType)
     return (
       <div className={styles.root}>
         {/* 前三个菜单的遮罩层 */}
@@ -38,7 +40,7 @@ export default class Filter extends Component {
           <FilterTitle titleSelectedStatus ={titleSelectedStatus} onTitleClick={this.onTitleClick}/>
 
           {/* 前三个菜单对应的内容： */}
-          {/* <FilterPicker /> */}
+          { (openType==='area'|| openType==='mode'|| openType==='price' ) && <FilterPicker />}
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
