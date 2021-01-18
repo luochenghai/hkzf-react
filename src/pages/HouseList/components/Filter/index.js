@@ -27,20 +27,30 @@ export default class Filter extends Component {
       {titleSelectedStatus: {...this.state.titleSelectedStatus,[type]:true},openType:type}
     )
   }
+  // 取消按钮
+  onCancel = ()=>{
+     this.setState(()=>{return {openType:''}})
+  }
+  // 确认按钮
+  onSave = ()=>{
+    this.setState(()=>{return {openType:''}})
+  }
   render() {
     const {titleSelectedStatus,openType} = this.state;
     // console.log('openType',openType)
     return (
       <div className={styles.root}>
         {/* 前三个菜单的遮罩层 */}
-        {/* <div className={styles.mask} /> */}
-
+        {/* 点击确认按钮是显示遮罩层 */}
+        { (openType==='area'|| openType==='mode'|| openType==='price' )  && <div className={styles.mask} onClick={()=>{
+            this.onCancel()
+        }}/>}
         <div className={styles.content}>
           {/* 标题栏 */}{/* 副组件给子组件传值 */}
-          <FilterTitle titleSelectedStatus ={titleSelectedStatus} onTitleClick={this.onTitleClick}/>
+          <FilterTitle titleSelectedStatus ={titleSelectedStatus} onTitleClick={this.onTitleClick} />
 
           {/* 前三个菜单对应的内容： */}
-          { (openType==='area'|| openType==='mode'|| openType==='price' ) && <FilterPicker />}
+          { (openType==='area'|| openType==='mode'|| openType==='price' ) && <FilterPicker onCancel={this.onCancel} onSave={this.onSave}/>}
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
