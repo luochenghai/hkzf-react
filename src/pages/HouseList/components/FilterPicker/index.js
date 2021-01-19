@@ -4,9 +4,9 @@ import { PickerView } from 'antd-mobile'
 
 import FilterFooter from '../../../../components/FilterFooter'
 export default class FilterPicker extends Component {
-  // 选中的值是状态数据
+  // 选中的值是状态数据(设置默认值)
   state = {
-    value:null
+    value:this.props.defaultValue
   }
   handleValue=(value)=>{
     console.log('val================',value)

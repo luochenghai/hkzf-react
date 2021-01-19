@@ -11,6 +11,16 @@ import styles from './index.module.css'
 
 // 获取当前城市id
 const {value} =  getCity('curr_city')
+// 默认值
+const selectedValues = {
+  //area: ['area', 'null'],
+   area: ['area', 'AREA|69cc5f6d-4f29-a77c', 'AREA|73aa1890-64c7-51d9'],
+ // mode: ['null'],
+   mode: ['true'],
+ // price: ['null'],
+   price: ['PRICE|1000'],
+  more: []
+}
 export default class Filter extends Component {
   componentDidMount(){
     this.loadHouseCondition()
@@ -26,7 +36,8 @@ export default class Filter extends Component {
     openType:'',
     // 将当前城市ID赋值给状态数据
     currCityValue:value,
-    filterData:''
+    filterData:'',
+    selectedValues,
   };
   // 改变成高亮的方法
   onTitleClick = (type)=>{
@@ -56,7 +67,9 @@ export default class Filter extends Component {
   renderFilterPicker = ()=>{
     const {openType,filterData:{area,rentType,price,subway}} = this.state;
     let data=[],col;
+    let defaultValue = selectedValues[openType];
     if (openType==='area'|| openType==='mode'|| openType==='price'){
+    //  console.log(defaultValue)
         switch(openType){
             case 'area':
              data = [area,subway]
@@ -73,7 +86,7 @@ export default class Filter extends Component {
             default:
             break;
         }
-        return (<FilterPicker data={data} col={col} type={openType} onCancel={this.onCancel} onSave={this.onSave} />)
+        return (<FilterPicker data={data} col={col} type={openType} defaultValue={defaultValue} onCancel={this.onCancel} onSave={this.onSave} />)
     } 
   }
  
