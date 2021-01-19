@@ -86,7 +86,8 @@ export default class Filter extends Component {
             default:
             break;
         }
-        return (<FilterPicker data={data} col={col} type={openType} defaultValue={defaultValue} onCancel={this.onCancel} onSave={this.onSave} />)
+        //  key={openType} 优化渲染
+        return (<FilterPicker key={openType} data={data} col={col} type={openType} defaultValue={defaultValue} onCancel={this.onCancel} onSave={this.onSave} />)
     } 
   }
  

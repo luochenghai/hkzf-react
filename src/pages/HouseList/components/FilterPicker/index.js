@@ -4,6 +4,14 @@ import { PickerView } from 'antd-mobile'
 
 import FilterFooter from '../../../../components/FilterFooter'
 export default class FilterPicker extends Component {
+  // componentDidUpdate 方法可以解决constructer方法执行一次的问题，还可以用在标签上用 key
+  // componentDidUpdate(prevProps,prevState){
+  //   if (this.state.value === prevState.value){
+  //     this.setState(()=>{
+  //       return {value:this.props.defaultValue}
+  //     })
+  //   }
+  // }
   // 选中的值是状态数据(设置默认值)
   state = {
     value:this.props.defaultValue
