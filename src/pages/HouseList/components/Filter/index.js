@@ -25,7 +25,8 @@ export default class Filter extends Component {
     },
     openType:'',
     // 将当前城市ID赋值给状态数据
-    currCityValue:value
+    currCityValue:value,
+    filterData:''
   };
   // 改变成高亮的方法
   onTitleClick = (type)=>{
@@ -38,17 +39,46 @@ export default class Filter extends Component {
   onCancel = ()=>{
      this.setState(()=>{return {openType:''}})
   }
-  // 确认按钮
-  onSave = ()=>{
+  // 确认按钮value
+  onSave = (type,value)=>{
+    console.log(type,value)
     this.setState(()=>{return {openType:''}})
   }
+  // 获取房屋查询条件
   loadHouseCondition = async ()=>{
       const {currCityValue} = this.state;
-      const {data} = await getHouseCondition(currCityValue);
-      console.log(data)
+      const {data:{body}} = await getHouseCondition(currCityValue);
+      //console.log(body)
+      this.setState(()=>{
+         return {filterData:body}
+      })
   }
+  renderFilterPicker = ()=>{
+    const {openType,filterData:{area,rentType,price,subway}} = this.state;
+    let data=[],col;
+    if (openType==='area'|| openType==='mode'|| openType==='price'){
+        switch(openType){
+            case 'area':
+             data = [area,subway]
+             col= 3;
+            break;
+            case 'mode':
+              data = rentType
+              col= 1;
+            break;
+            case 'price':
+              data = price
+              col= 1;
+            break;
+            default:
+            break;
+        }
+        return (<FilterPicker data={data} col={col} type={openType} onCancel={this.onCancel} onSave={this.onSave} />)
+    } 
+  }
+ 
   render() {
-    const {titleSelectedStatus,openType} = this.state;
+    const { titleSelectedStatus, openType } = this.state;
     // console.log('openType',openType)
     return (
       <div className={styles.root}>
@@ -62,8 +92,12 @@ export default class Filter extends Component {
           <FilterTitle titleSelectedStatus ={titleSelectedStatus} onTitleClick={this.onTitleClick} />
 
           {/* 前三个菜单对应的内容： */}
-          { (openType==='area'|| openType==='mode'|| openType==='price' ) && <FilterPicker onCancel={this.onCancel} onSave={this.onSave}/>}
-
+          { 
+            /* 原来的写法，现在抽离成单独的方法 */
+            //(openType==='area'|| openType==='mode'|| openType==='price' ) && <FilterPicker data={filterData} onCancel={this.onCancel} onSave={this.onSave} />
+            this.renderFilterPicker()
+          }
+          
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
         </div>
